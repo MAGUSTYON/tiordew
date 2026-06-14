@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Bisikkan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap');
+
+  :root {
+    --pink-deep: #E91E8C;
+    --pink-mid:  #F472B6;
+    --pink-soft: #FCE7F3;
+    --pink-pale: #FFF0F8;
+    --green-deep: #059669;
+    --green-mid:  #34D399;
+    --green-soft: #D1FAE5;
+    --white: #FFFFFF;
+    --text-dark: #1a1a2e;
+    --text-mid:  #4a4a6a;
+    --text-light: #8888aa;
+    --radius: 20px;
+    --shadow: 0 8px 32px rgba(233,30,140,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg, #FFF0F8 0%, #F0FDF4 50%, #FFF0F8 100%); min-height: 100vh; }
+
+  /* LOGIN */
+  #loginPage { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-card {
+    background: var(--white); border-radius: var(--radius);
+    padding: 44px 36px; width: 100%; max-width: 400px;
+    box-shadow: var(--shadow); border: 2px solid var(--pink-soft);
+    position: relative; overflow: hidden;
+  }
+  .login-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, var(--pink-deep), var(--green-mid), var(--pink-mid)); }
+  .login-logo { text-align: center; margin-bottom: 28px; }
+  .login-logo .icon { font-size: 2.8rem; display: block; margin-bottom: 8px; }
+  .login-logo h1 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.7rem; background: linear-gradient(90deg, var(--pink-deep), var(--green-deep)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .login-logo p { font-size: 0.82rem; color: var(--text-light); font-weight: 600; margin-top: 4px; }
+  .field-label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--pink-deep); margin-bottom: 8px; }
+  .field-wrap { position: relative; margin-bottom: 18px; }
+  .field-wrap input {
+    width: 100%; padding: 13px 16px;
+    border: 2px solid var(--pink-soft); border-radius: 12px;
+    font-family: 'Quicksand', sans-serif; font-size: 0.97rem;
+    color: var(--text-dark); background: var(--pink-pale); outline: none;
+    transition: all 0.2s; font-weight: 600;
+  }
+  .field-wrap input:focus { border-color: var(--pink-mid); box-shadow: 0 0 0 4px rgba(233,30,140,0.08); background: white; }
+  .toggle-pw { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.1rem; user-select: none; }
+  .btn-login {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--pink-deep), #c2185b);
+    color: white; border: none; border-radius: 12px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.05rem;
+    cursor: pointer; transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(233,30,140,0.35); margin-top: 8px;
+  }
+  .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(233,30,140,0.4); }
+  .login-hint { margin-top: 16px; padding: 12px; background: var(--green-soft); border-radius: 10px; font-size: 0.79rem; color: var(--green-deep); font-weight: 600; text-align: center; }
+  .login-error { display: none; margin-top: 12px; padding: 10px; background: #FFF0F0; border: 1.5px solid #FFAAAA; border-radius: 10px; font-size: 0.82rem; color: #cc0033; font-weight: 600; text-align: center; }
+
+  /* ADMIN */
+  #adminPage { display: none; }
+  .admin-header {
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--pink-soft);
+    padding: 16px 28px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .admin-header .logo { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.4rem; background: linear-gradient(90deg, var(--pink-deep), var(--green-deep)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .admin-badge { font-size: 0.78rem; font-weight: 700; background: var(--green-soft); color: var(--green-deep); padding: 5px 14px; border-radius: 50px; border: 1.5px solid var(--green-mid); }
+  .btn-logout { font-size: 0.8rem; font-weight: 700; color: var(--text-light); background: none; border: 2px solid var(--pink-soft); border-radius: 50px; padding: 5px 14px; cursor: pointer; transition: all 0.2s; font-family: 'Quicksand', sans-serif; }
+  .btn-logout:hover { border-color: var(--pink-deep); color: var(--pink-deep); }
+  .admin-body { padding: 28px; max-width: 900px; margin: 0 auto; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: white; border-radius: 16px; padding: 20px; border: 2px solid var(--pink-soft); text-align: center; box-shadow: 0 4px 16px rgba(233,30,140,0.08); }
+  .stat-card .num { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 2rem; background: linear-gradient(135deg, var(--pink-deep), var(--green-deep)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .stat-card .lbl { font-size: 0.78rem; font-weight: 600; color: var(--text-light); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+  .toolbar h2 { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text-dark); }
+  .toolbar-right { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn { padding: 7px 16px; border-radius: 50px; border: 2px solid var(--pink-soft); background: white; font-family: 'Quicksand', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; color: var(--text-mid); }
+  .filter-btn.active { background: var(--pink-deep); border-color: var(--pink-deep); color: white; }
+  .filter-btn:hover:not(.active) { border-color: var(--pink-mid); color: var(--pink-deep); }
+  .btn-clear-all { padding: 7px 16px; border-radius: 50px; border: 2px solid #FFAAAA; background: #FFF0F0; font-family: 'Quicksand', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s; color: #cc0033; }
+  .btn-clear-all:hover { background: #cc0033; color: white; border-color: #cc0033; }
+
+  .msg-list { display: flex; flex-direction: column; gap: 14px; }
+  .msg-card { background: white; border-radius: 16px; border: 2px solid var(--pink-soft); overflow: hidden; box-shadow: 0 4px 16px rgba(233,30,140,0.07); cursor: pointer; transition: all 0.2s; }
+  .msg-card:hover { box-shadow: 0 8px 28px rgba(233,30,140,0.15); transform: translateY(-2px); border-color: var(--pink-mid); }
+  .msg-card.unread { border-left: 5px solid var(--pink-deep); }
+  .msg-card.read   { border-left: 5px solid var(--green-mid); }
+  .msg-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .msg-meta { display: flex; align-items: center; gap: 10px; }
+  .anon-dot { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--pink-soft), var(--green-soft)); border: 2px solid var(--pink-mid); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .msg-who { font-weight: 700; font-size: 0.88rem; color: var(--text-mid); }
+  .msg-time { font-size: 0.75rem; color: var(--text-light); font-weight: 600; }
+  .unread-pill { font-size: 0.68rem; font-weight: 800; background: var(--pink-deep); color: white; padding: 3px 10px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .read-pill { font-size: 0.68rem; font-weight: 800; background: var(--green-soft); color: var(--green-deep); padding: 3px 10px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .msg-preview { padding: 0 20px 16px; color: var(--text-mid); font-size: 0.9rem; font-weight: 500; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .empty-state { text-align: center; padding: 56px 24px; color: var(--text-light); }
+  .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+  .empty-state p { font-size: 0.9rem; font-weight: 600; }
+
+  .loading-state { text-align: center; padding: 40px; color: var(--text-light); font-weight: 600; font-size: 0.9rem; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,26,46,0.55); backdrop-filter: blur(6px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: white; border-radius: var(--radius); width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); position: relative; overflow: hidden; animation: popIn 0.25s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, var(--pink-deep), var(--green-mid)); }
+  .modal-head { padding: 28px 28px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .modal-from { display: flex; align-items: center; gap: 10px; }
+  .modal-from .anon-dot { width: 44px; height: 44px; font-size: 1.3rem; }
+  .modal-from-info strong { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.97rem; color: var(--text-dark); display: block; }
+  .modal-from-info span { font-size: 0.78rem; color: var(--text-light); font-weight: 600; }
+  .modal-close { background: var(--pink-soft); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; transition: all 0.2s; flex-shrink: 0; color: var(--pink-deep); }
+  .modal-close:hover { background: var(--pink-mid); color: white; }
+  .modal-body { padding: 20px 28px 24px; }
+  .msg-bubble { background: var(--pink-pale); border: 2px solid var(--pink-soft); border-radius: 16px; padding: 20px; font-size: 1.02rem; line-height: 1.7; color: var(--text-dark); font-weight: 500; margin-bottom: 20px; min-height: 90px; word-break: break-word; }
+  .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-wa { flex: 1; padding: 13px; background: #25D366; color: white; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(37,211,102,0.3); text-decoration: none; }
+  .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
+  .btn-del { padding: 13px 18px; background: #FFF0F0; color: #cc0033; border: 2px solid #FFAAAA; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
+  .btn-del:hover { background: #cc0033; color: white; border-color: #cc0033; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text-dark); color: white; padding: 12px 24px; border-radius: 50px; font-size: 0.88rem; font-weight: 600; z-index: 999; transition: transform 0.3s ease; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.green { background: var(--green-deep); }
+
+  @media (max-width: 580px) { .stats-row { grid-template-columns: 1fr 1fr; } .admin-body { padding: 16px; } }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="icon">🔐</span>
+      <h1>Admin Bisikkan</h1>
+      <p>Masuk untuk lihat semua pesan anonymous</p>
+    </div>
+    <label class="field-label" for="username">Username</label>
+    <div class="field-wrap">
+      <input type="text" id="username" placeholder="Masukkan username" autocomplete="username">
+    </div>
+    <label class="field-label" for="password">Password</label>
+    <div class="field-wrap">
+      <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password">
+      <span class="toggle-pw" onclick="togglePw()">👁️</span>
+    </div>
+    <button class="btn-login" onclick="doLogin()">🔓 Masuk ke Admin</button>
+    <div class="login-error" id="loginError">Username atau password salah!</div>
+    <div class="login-hint">💡 Default login: <strong>admin</strong> / <strong>bisikkan123</strong></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminPage">
+  <div class="admin-header">
+    <div class="logo">Bisikkan 💌 Admin</div>
+    <div class="header-right">
+      <span class="admin-badge">✦ Admin</span>
+      <button class="btn-logout" onclick="doLogout()">Keluar</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="statTotal">—</div><div class="lbl">Total Pesan</div></div>
+      <div class="stat-card"><div class="num" id="statUnread">—</div><div class="lbl">Belum Dibaca</div></div>
+      <div class="stat-card"><div class="num" id="statRead">—</div><div class="lbl">Sudah Dibaca</div></div>
+    </div>
+    <div class="toolbar">
+      <h2>📩 Pesan Masuk</h2>
+      <div class="toolbar-right">
+        <button class="filter-btn active" id="fAll"    onclick="setFilter('all')">Semua</button>
+        <button class="filter-btn"        id="fUnread" onclick="setFilter('unread')">Belum Dibaca</button>
+        <button class="filter-btn"        id="fRead"   onclick="setFilter('read')">Sudah Dibaca</button>
+        <button class="btn-clear-all" onclick="clearAll()">Hapus Semua</button>
+      </div>
+    </div>
+    <div class="msg-list" id="msgList"><div class="loading-state">⏳ Memuat pesan…</div></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-from">
+        <div class="anon-dot">🎭</div>
+        <div class="modal-from-info">
+          <strong>Seseorang yang Anonymous</strong>
+          <span id="modalTime">—</span>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg-bubble" id="modalText">—</div>
+      <div class="modal-actions">
+        <a class="btn-wa" id="waBtn" href="#" target="_blank">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Share ke WhatsApp
+        </a>
+        <button class="btn-del" onclick="deleteCurrentMsg()">🗑️</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const SUPABASE_URL = 'https://oswqwablnndjiidmswks.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zd3F3YWJsbm5kamlpZG1zd2tzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0Mzg1MjgsImV4cCI6MjA5NzAxNDUyOH0.8KWlo5cL6-kIFRMKhMbLQ7T4n56-HYtQGA09SMKa_dM';
+
+  const ADMIN_USER = 'admin';
+  const ADMIN_PASS = 'bisikkan123';
+  let currentFilter = 'all';
+  let currentMsgId  = null;
+  let allMessages   = [];
+
+  // ── HELPERS ──────────────────────────────────
+  const headers = {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`
+  };
+
+  function showToast(msg, green=false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (green ? ' green' : '');
+    setTimeout(() => t.className = 'toast', 2500);
+  }
+
+  function escHtml(t) {
+    return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function formatTime(iso) {
+    const d = new Date(iso), now = new Date();
+    const diff = (now - d) / 1000;
+    if (diff < 60)    return 'Baru saja';
+    if (diff < 3600)  return Math.floor(diff/60) + ' menit lalu';
+    if (diff < 86400) return Math.floor(diff/3600) + ' jam lalu';
+    return d.toLocaleDateString('id-ID', { day:'numeric', month:'short' });
+  }
+
+  function formatTimeFull(iso) {
+    return new Date(iso).toLocaleString('id-ID', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  // ── AUTH ─────────────────────────────────────
+  function doLogin() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    const err = document.getElementById('loginError');
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+      sessionStorage.setItem('bisikkan_admin', '1');
+      showAdmin();
+    } else {
+      err.style.display = 'block';
+      setTimeout(() => err.style.display = 'none', 3000);
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('bisikkan_admin');
+    document.getElementById('adminPage').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+  }
+
+  function togglePw() {
+    const pw = document.getElementById('password');
+    pw.type = pw.type === 'password' ? 'text' : 'password';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin();
+  });
+
+  // ── SUPABASE ─────────────────────────────────
+  async function fetchMessages() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/messages?order=created_at.desc`, { headers });
+    if (!res.ok) throw new Error('Fetch failed');
+    return await res.json();
+  }
+
+  async function markRead(id) {
+    await fetch(`${SUPABASE_URL}/rest/v1/messages?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { ...headers, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ read: true })
+    });
+  }
+
+  async function deleteMsg(id) {
+    await fetch(`${SUPABASE_URL}/rest/v1/messages?id=eq.${id}`, {
+      method: 'DELETE', headers
+    });
+  }
+
+  async function deleteAllMsgs() {
+    // delete all rows — neq id from 0 (trick to match all)
+    await fetch(`${SUPABASE_URL}/rest/v1/messages?id=gte.0`, {
+      method: 'DELETE', headers
+    });
+  }
+
+  // ── RENDER ───────────────────────────────────
+  async function showAdmin() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'block';
+    await loadMessages();
+  }
+
+  async function loadMessages() {
+    document.getElementById('msgList').innerHTML = '<div class="loading-state">⏳ Memuat pesan…</div>';
+    try {
+      allMessages = await fetchMessages();
+      renderMessages();
+    } catch(e) {
+      document.getElementById('msgList').innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>Gagal memuat pesan. Cek koneksi atau Supabase kamu.</p></div>';
+    }
+  }
+
+  function renderMessages() {
+    const msgs = currentFilter === 'all'    ? allMessages
+               : currentFilter === 'unread' ? allMessages.filter(m => !m.read)
+               :                              allMessages.filter(m =>  m.read);
+
+    const total  = allMessages.length;
+    const unread = allMessages.filter(m => !m.read).length;
+    document.getElementById('statTotal').textContent  = total;
+    document.getElementById('statUnread').textContent = unread;
+    document.getElementById('statRead').textContent   = total - unread;
+
+    const list = document.getElementById('msgList');
+    if (msgs.length === 0) {
+      list.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>${currentFilter === 'unread' ? 'Tidak ada pesan yang belum dibaca' : 'Belum ada pesan masuk'}</p></div>`;
+      return;
+    }
+
+    list.innerHTML = msgs.map(m => `
+      <div class="msg-card ${m.read ? 'read' : 'unread'}" onclick="openMsg(${m.id})">
+        <div class="msg-header">
+          <div class="msg-meta">
+            <div class="anon-dot">🎭</div>
+            <div>
+              <div class="msg-who">Anonymous</div>
+              <div class="msg-time">${formatTime(m.created_at)}</div>
+            </div>
+          </div>
+          ${m.read ? '<span class="read-pill">✓ Dibaca</span>' : '<span class="unread-pill">• Baru</span>'}
+        </div>
+        <div class="msg-preview">${escHtml(m.text)}</div>
+      </div>
+    `).join('');
+  }
+
+  function setFilter(f) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(f === 'all' ? 'fAll' : f === 'unread' ? 'fUnread' : 'fRead').classList.add('active');
+    renderMessages();
+  }
+
+  // ── MODAL ────────────────────────────────────
+  async function openMsg(id) {
+    const msg = allMessages.find(m => m.id === id);
+    if (!msg) return;
+
+    currentMsgId = id;
+    document.getElementById('modalTime').textContent = formatTimeFull(msg.created_at);
+    document.getElementById('modalText').textContent = msg.text;
+
+    const waText = encodeURIComponent(`💌 *Pesan Anonymous untukku:*\n\n"${msg.text}"\n\n— Via Bisikkan`);
+    document.getElementById('waBtn').href = `https://wa.me/?text=${waText}`;
+
+    document.getElementById('modalOverlay').classList.add('open');
+
+    if (!msg.read) {
+      await markRead(id);
+      msg.read = true;
+      renderMessages();
+    }
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    currentMsgId = null;
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  async function deleteCurrentMsg() {
+    if (!currentMsgId) return;
+    if (!confirm('Hapus pesan ini?')) return;
+    try {
+      await deleteMsg(currentMsgId);
+      allMessages = allMessages.filter(m => m.id !== currentMsgId);
+      closeModal();
+      renderMessages();
+      showToast('🗑️ Pesan dihapus');
+    } catch(e) { showToast('❌ Gagal hapus'); }
+  }
+
+  async function clearAll() {
+    if (!confirm('Hapus SEMUA pesan? Tidak bisa dikembalikan!')) return;
+    try {
+      await deleteAllMsgs();
+      allMessages = [];
+      renderMessages();
+      showToast('🗑️ Semua pesan dihapus');
+    } catch(e) { showToast('❌ Gagal hapus'); }
+  }
+
+  // ── INIT ─────────────────────────────────────
+  if (sessionStorage.getItem('bisikkan_admin') === '1') showAdmin();
+</script>
+</body>
+</html>

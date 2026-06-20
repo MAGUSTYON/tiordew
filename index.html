@@ -197,23 +197,6 @@
   }
   .btn-reset:hover { background: var(--purple-mid); color: white; }
 
-  .share-section { margin-top: 28px; padding-top: 24px; border-top: 2px dashed var(--purple-soft); text-align: center; }
-  .share-section p { font-size: 0.85rem; color: var(--text-mid); margin-bottom: 12px; font-weight: 600; }
-  .share-link-box { display: flex; gap: 8px; }
-  .share-link-box input {
-    flex: 1; padding: 10px 14px;
-    border: 2px solid var(--purple-soft); border-radius: 10px;
-    font-family: 'Quicksand', sans-serif; font-size: 0.82rem;
-    color: var(--text-mid); background: var(--purple-pale); outline: none;
-  }
-  .btn-copy {
-    padding: 10px 18px; background: var(--purple-deep); color: white;
-    border: none; border-radius: 10px; font-weight: 700; font-size: 0.82rem;
-    cursor: pointer; transition: all 0.2s; white-space: nowrap; font-family: 'Quicksand', sans-serif;
-  }
-  .btn-copy:hover { background: #6d28d9; }
-  .btn-copy.copied { background: var(--green-deep); }
-
   footer { padding: 32px 24px; text-align: center; color: var(--text-light); font-size: 0.78rem; font-weight: 500; }
 
   .toast {
@@ -259,6 +242,7 @@
   </div>
 
   <button class="btn-send" id="sendBtn" onclick="sendMessage()">💌 Kirim Pesan</button>
+</div>
 
 <div class="card" id="successCard" style="display:none;">
   <div class="success-box">
@@ -275,8 +259,6 @@
 <script>
   const SUPABASE_URL = 'https://oswqwablnndjiidmswks.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zd3F3YWJsbm5kamlpZG1zd2tzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0Mzg1MjgsImV4cCI6MjA5NzAxNDUyOH0.8KWlo5cL6-kIFRMKhMbLQ7T4n56-HYtQGA09SMKa_dM';
-
-  document.getElementById('shareUrl').value = window.location.href;
 
   const ta = document.getElementById('msgInput');
   const cc = document.getElementById('charCount');
@@ -334,15 +316,6 @@
     btn.innerHTML = '💌 Kirim Pesan';
     document.getElementById('formCard').style.display = 'block';
     document.getElementById('successCard').style.display = 'none';
-  }
-
-  function copyLink() {
-    navigator.clipboard.writeText(document.getElementById('shareUrl').value).then(() => {
-      const btn = document.getElementById('copyBtn');
-      btn.textContent = '✓ Tersalin!';
-      btn.className = 'btn-copy copied';
-      setTimeout(() => { btn.textContent = 'Salin'; btn.className = 'btn-copy'; }, 2000);
-    });
   }
 </script>
 </body>

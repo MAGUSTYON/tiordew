@@ -9,3 +9,19 @@ from sklearn.linear_model import LinearRegression             # algoritma Linear
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score   # alat penilai model
 
 print("Semua library berhasil dipanggil ✅")
+
+
+fig, ax = plt.subplots(1, 2, figsize=(12, 4))    # siapkan kanvas dengan 2 grafik bersebelahan
+
+ax[0].hist(df["YearsExperience"], bins=8, color="skyblue", edgecolor="black")   # histogram pengalaman
+ax[0].set_title("Sebaran Lama Pengalaman")
+ax[0].set_xlabel("Pengalaman (tahun)")
+ax[0].set_ylabel("Jumlah orang")
+
+ax[1].hist(df["Salary"], bins=8, color="lightgreen", edgecolor="black")         # histogram gaji
+ax[1].set_title("Sebaran Gaji")
+ax[1].set_xlabel("Gaji")
+ax[1].set_ylabel("Jumlah orang")
+
+plt.tight_layout()   # rapikan jarak antar grafik
+plt.show()           # tampilkan grafik

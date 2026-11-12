@@ -61,3 +61,13 @@ y = df["Salary"]              # y = target -> pakai kurung biasa [ ] cukup
 
 print("Bentuk X:", X.shape)
 print("Bentuk y:", y.shape)
+
+# Bagi data: 80% untuk BELAJAR (train) dan 20% untuk UJIAN (test)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,       # 20% data disimpan untuk ujian
+    random_state=42      # angka acak dikunci supaya hasil selalu sama setiap dijalankan
+)
+
+print("Data belajar (train):", X_train.shape[0], "baris")
+print("Data ujian   (test) :", X_test.shape[0], "baris")

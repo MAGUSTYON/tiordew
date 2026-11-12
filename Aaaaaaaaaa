@@ -25,3 +25,23 @@ ax[1].set_ylabel("Jumlah orang")
 
 plt.tight_layout()   # rapikan jarak antar grafik
 plt.show()           # tampilkan grafik
+
+
+
+[12/11, 15.34] +62 821-5520-3678: fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+
+ax[0].boxplot(df["YearsExperience"])    # boxplot pengalaman
+ax[0].set_title("Boxplot Pengalaman")
+
+ax[1].boxplot(df["Salary"])             # boxplot gaji
+ax[1].set_title("Boxplot Gaji")
+
+plt.tight_layout()
+plt.show()
+[12/11, 15.35] +62 821-5520-3678: plt.figure(figsize=(7, 5))
+plt.scatter(df["YearsExperience"], df["Salary"], color="royalblue")   # tiap titik = 1 orang
+plt.title("Hubungan Pengalaman dan Gaji")
+plt.xlabel("Pengalaman (tahun)")
+plt.ylabel("Gaji")
+plt.grid(True, alpha=0.3)    # tambahkan garis bantu tipis
+plt.show()

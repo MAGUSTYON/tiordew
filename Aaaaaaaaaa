@@ -108,3 +108,22 @@ r2 = r2_score(y_test, y_pred)                       # skor kecocokan (maks 1)
 print(f"MAE  : {mae:,.2f}")
 print(f"RMSE : {rmse:,.2f}")
 print(f"R²   : {r2:.4f}")
+
+
+
+plt.figure(figsize=(8, 5))
+
+plt.scatter(X_train, y_train, color="royalblue", label="Data belajar (train)")   # titik data latihan
+plt.scatter(X_test, y_test, color="orange", label="Data ujian (test)")           # titik data ujian
+
+# Gambar garis model dengan menebak gaji untuk rentang pengalaman yang rapi
+garis_x = pd.DataFrame({"YearsExperience": np.linspace(X["YearsExperience"].min(),
+                                                       X["YearsExperience"].max(), 100)})
+plt.plot(garis_x["YearsExperience"], model.predict(garis_x), color="red", label="Garis Linear Regression")
+
+plt.title("Garis Prediksi Gaji")
+plt.xlabel("Pengalaman (tahun)")
+plt.ylabel("Gaji")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()

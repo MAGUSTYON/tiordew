@@ -85,3 +85,16 @@ print(f"Slope (m)     : {slope:,.2f}")
 print(f"Intercept (c) : {intercept:,.2f}")
 print()
 print(f"Rumus model: Gaji = {slope:,.2f} x Pengalaman + {intercept:,.2f}")
+
+
+y_pred = model.predict(X_test)      # model menebak gaji untuk data ujian
+
+# Bandingkan tebakan model dengan gaji sebenarnya
+hasil = pd.DataFhttps://meet.google.com/saz-xfce-gbjrame({
+    "Pengalaman (tahun)": X_test["YearsExperience"].values,
+    "Gaji Sebenarnya": y_test.values,
+    "Gaji Tebakan Model": y_pred.round(0),
+})
+hasil["Selisih"] = (hasil["Gaji Sebenarnya"] - hasil["Gaji Tebakan Model"]).abs()
+
+display(hasil)

@@ -1,0 +1,11 @@
+# Library = kotak peralatan yang sudah dibuat orang lain, tinggal dipakai.
+import pandas as pd                  # pandas: untuk membaca & mengolah tabel (seperti Excel versi Python)
+import numpy as np                   # numpy: untuk hitung-hitungan angka
+import matplotlib.pyplot as plt      # matplotlib: untuk menggambar grafik
+
+# Dari scikit-learn (library machine learning), kita ambil 3 alat:
+from sklearn.model_selection import train_test_split          # alat untuk membagi data jadi "latihan" & "ujian"
+from sklearn.linear_model import LinearRegression             # algoritma Linear Regression
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score   # alat penilai model
+
+print("Semua library berhasil dipanggil ✅")

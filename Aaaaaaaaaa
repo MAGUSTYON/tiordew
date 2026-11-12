@@ -98,3 +98,13 @@ hasil = pd.DataFhttps://meet.google.com/saz-xfce-gbjrame({
 hasil["Selisih"] = (hasil["Gaji Sebenarnya"] - hasil["Gaji Tebakan Model"]).abs()
 
 display(hasil)
+
+
+
+mae = mean_absolute_error(y_test, y_pred)           # rata-rata selisih tebakan
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))  # mirip MAE, tapi lebih "galak" ke kesalahan besar
+r2 = r2_score(y_test, y_pred)                       # skor kecocokan (maks 1)
+
+print(f"MAE  : {mae:,.2f}")
+print(f"RMSE : {rmse:,.2f}")
+print(f"R²   : {r2:.4f}")

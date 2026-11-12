@@ -127,3 +127,15 @@ plt.ylabel("Gaji")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
+
+
+
+def prediksi_gaji(tahun_pengalaman):
+    # Fungsi ini menerima lama pengalaman, lalu mengembalikan tebakan gaji.
+    data_baru = pd.DataFrame({"YearsExperience": [tahun_pengalaman]})   # ubah angka jadi tabel
+    hasil = model.predict(data_baru)[0]                                 # minta model menebak
+    return hasil
+
+# Coba beberapa contoh
+for tahun in [1, 3, 5, 8, 10]:
+    print(f"Pengalaman {tahun:>2} tahun  ->  prediksi gaji: {prediksi_gaji(tahun):,.0f}")

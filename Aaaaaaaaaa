@@ -45,3 +45,19 @@ plt.xlabel("Pengalaman (tahun)")
 plt.ylabel("Gaji")
 plt.grid(True, alpha=0.3)    # tambahkan garis bantu tipis
 plt.show()
+
+
+
+# 1) Buang kolom nomor urut "Unnamed: 0" kalau ada (kolom ini tidak berguna untuk prediksi)
+if "Unnamed: 0" in df.columns:
+    df = df.drop(columns=["Unnamed: 0"])
+
+# 2) Hapus baris dobel dan baris kosong (jaga-jaga, walau di data ini tidak ada)
+df = df.drop_duplicates().dropna()
+
+# 3) Pisahkan "bahan" (X) dan "jawaban" (y)
+X = df[["YearsExperience"]]   # X = fitur  -> pakai kurung DOUBLE [[ ]] supaya bentuknya tabel
+y = df["Salary"]              # y = target -> pakai kurung biasa [ ] cukup
+
+print("Bentuk X:", X.shape)
+print("Bentuk y:", y.shape)

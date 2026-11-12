@@ -71,3 +71,17 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print("Data belajar (train):", X_train.shape[0], "baris")
 print("Data ujian   (test) :", X_test.shape[0], "baris")
+
+
+
+model = LinearRegression()          # 1) Buat model kosong (belum pintar)
+model.fit(X_train, y_train)         # 2) Latih model dengan data belajar -> komputer mencari garis terbaik
+
+# Lihat hasil "belajar"-nya
+slope = model.coef_[0]              # kenaikan gaji per 1 tahun pengalaman
+intercept = model.intercept_        # gaji awal ketika pengalaman 0 tahun
+
+print(f"Slope (m)     : {slope:,.2f}")
+print(f"Intercept (c) : {intercept:,.2f}")
+print()
+print(f"Rumus model: Gaji = {slope:,.2f} x Pengalaman + {intercept:,.2f}")
